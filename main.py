@@ -8,14 +8,13 @@ READY_TO_SEND_FOLDER_PATH = "/ReadyToSend"
 
 all_invented_names = []
 dir_path = os.path.dirname(os.path.abspath(__file__)) # get the path of the current file
+output_folder_absolute_path = dir_path + OUTPUT_FOLDER_PATH # absolute path of the Output folder
+ready_to_send_folder_absolute_path = output_folder_absolute_path + READY_TO_SEND_FOLDER_PATH # absolute path of the ReadyToSend folder
 
 def create_folders():
     """
     create the folders: Output/ReadyToSend
     """
-    output_folder_absolute_path = dir_path + OUTPUT_FOLDER_PATH # absolute path of the Output folder
-    ready_to_send_folder_absolute_path = output_folder_absolute_path + READY_TO_SEND_FOLDER_PATH # absolute path of the ReadyToSend folder
-
     if not os.path.exists(output_folder_absolute_path): # check if the Output folder not exists
         os.makedirs(output_folder_absolute_path) # create the Output folder
         print(f"created folder: {OUTPUT_FOLDER_PATH}")
@@ -31,14 +30,32 @@ def get_names_from_file():
     file_path = dir_path + "/Input/Names/invited_names.txt"
     with open(file_path, "r") as file:
         return file.readlines()
-
-# Output
-#   ReadyToSend
-#       letter_for_Alice.txt
-#       letter_for_Bob.txt
-#       ...
+def get_letter_from_file():
+    """
+        get a letter from the starting_letter.txt
+        :return: letter
+    """
+    file_path = dir_path + "/Input/Letters/starting_letter.txt"
+    with open(file_path, "r") as file:
+        return file.read()
+def create_letter_file(name):
+    """
+    create the letter to the file
+    :param name: invented name
+    """
+    file_path = ready_to_send_folder_absolute_path + "/letter_for_" + name + ".txt" # absolute path of the letter file
+    with open(file_path, "w") as file:
+        file.write(letter.replace("[name]", name)) # replace the [name] placeholder with the invented name
+    print(f"created letter file: {file_path}")
+def save_letters():
+    """
+    save the letters in the ReadyToSend folder
+    """
+    for name in all_invented_names: # for each name in the invented_names.txt
+        create_letter_file(name) # create the letter
 
 
 create_folders() # create the folders: Output/ReadyToSend
 all_invented_names = [name.strip() for name in get_names_from_file()] # remove the \n from the names from the invented_names.txt
-print(all_invented_names)
+letter = get_letter_from_file() # get the letter from the starting_letter.txt
+save_letters() # save the letters in the ReadyToSend folder
