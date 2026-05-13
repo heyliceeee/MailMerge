@@ -1,10 +1,7 @@
 import os
 OUTPUT_FOLDER_PATH = "/Output"
 READY_TO_SEND_FOLDER_PATH = "/ReadyToSend"
-
-# 2. create the letters using starting_letter.txt
-# 3. replace the [name] placeholder with each name in invented_names.txt
-# 4. save the letters in the ReadyToSend folder
+PLACEHOLDER = "[name]"
 
 all_invented_names = []
 dir_path = os.path.dirname(os.path.abspath(__file__)) # get the path of the current file
@@ -45,7 +42,7 @@ def create_letter_file(name):
     """
     file_path = ready_to_send_folder_absolute_path + "/letter_for_" + name + ".txt" # absolute path of the letter file
     with open(file_path, "w") as file:
-        file.write(letter.replace("[name]", name)) # replace the [name] placeholder with the invented name
+        file.write(letter.replace(PLACEHOLDER, name)) # replace the [name] placeholder with the invented name
     print(f"created letter file: {file_path}")
 def save_letters():
     """
