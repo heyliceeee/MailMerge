@@ -6,12 +6,13 @@ READY_TO_SEND_FOLDER_PATH = "/ReadyToSend"
 # 3. replace the [name] placeholder with each name in invented_names.txt
 # 4. save the letters in the ReadyToSend folder
 
+all_invented_names = []
+dir_path = os.path.dirname(os.path.abspath(__file__)) # get the path of the current file
 
 def create_folders():
     """
     create the folders: Output/ReadyToSend
     """
-    dir_path = os.path.dirname(os.path.abspath(__file__)) # get the path of the current file
     output_folder_absolute_path = dir_path + OUTPUT_FOLDER_PATH # absolute path of the Output folder
     ready_to_send_folder_absolute_path = output_folder_absolute_path + READY_TO_SEND_FOLDER_PATH # absolute path of the ReadyToSend folder
 
@@ -22,6 +23,14 @@ def create_folders():
     if not os.path.exists(ready_to_send_folder_absolute_path): # check if the ReadyToSend folder not exists
         os.makedirs(ready_to_send_folder_absolute_path)  # create the ReadyToSend folder
         print(f"created folder: {READY_TO_SEND_FOLDER_PATH}")
+def get_names_from_file():
+    """
+    get names from the invented_names.txt
+    :return: list of names
+    """
+    file_path = dir_path + "/Input/Names/invited_names.txt"
+    with open(file_path, "r") as file:
+        return file.readlines()
 
 # Output
 #   ReadyToSend
@@ -31,3 +40,5 @@ def create_folders():
 
 
 create_folders() # create the folders: Output/ReadyToSend
+all_invented_names = [name.strip() for name in get_names_from_file()] # remove the \n from the names from the invented_names.txt
+print(all_invented_names)
